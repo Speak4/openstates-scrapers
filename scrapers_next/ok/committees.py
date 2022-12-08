@@ -69,6 +69,8 @@ class HouseCommitteeDetail(HtmlPage):
 
     def process_page(self):
         com = self.input
+
+        # Get Chair
         try:
             Chair_member = (
                 CSS("#ctl00_ContentPlaceHolder1_lnkChair")
@@ -77,18 +79,43 @@ class HouseCommitteeDetail(HtmlPage):
                 .tail.strip()
                 .replace("Rep.", "")
             )
-            VC_member = (
-                CSS("#ctl00_ContentPlaceHolder1_lnkViceChair")
-                .match_one(self.root)
-                .getchildren()[0]
-                .tail.replace("Rep.", "")
-            )
             role_C = (
                 CSS("#ctl00_ContentPlaceHolder1_lnkChair")
                 .match_one(self.root)
                 .text_content()[:5]
                 .strip()
                 .replace("Rep.", "")
+            )
+            com.add_member(Chair_member, role_C)
+        except SelectorError:
+            try:
+                CoChair_member = (
+                    CSS("#ctl00_ContentPlaceHolder1_lnkChair")
+                    .match_one(self.root)
+                    .getchildren()[0]
+                    .tail.strip()
+                    .replace("Rep.", "")
+                )
+                role_CoC = (
+                    CSS("#ctl00_ContentPlaceHolder1_lnkChair")
+                    .match_one(self.root)
+                    .text_content()[:10]
+                    .strip()
+                    .replace("Rep.", "")
+                )
+                com.add_member(CoChair_member, role_CoC)
+            except SelectorError:
+                print("No Chair Member Found")
+        except SelectorError:
+            print("No Chair Member Found")
+
+        # Get Vice Chair
+        try:
+            VC_member = (
+                CSS("#ctl00_ContentPlaceHolder1_lnkViceChair")
+                .match_one(self.root)
+                .getchildren()[0]
+                .tail.replace("Rep.", "")
             )
             role_VC = (
                 CSS("#ctl00_ContentPlaceHolder1_lnkViceChair")
@@ -97,38 +124,33 @@ class HouseCommitteeDetail(HtmlPage):
                 .strip()
                 .replace("Rep.", "")
             )
-            com.add_member(Chair_member, role_C)
             com.add_member(VC_member, role_VC)
         except SelectorError:
-            CoChair_member = (
-                CSS("#ctl00_ContentPlaceHolder1_lnkChair")
-                .match_one(self.root)
-                .getchildren()[0]
-                .tail.strip()
-                .replace("Rep.", "")
-            )
-            role_CoC = (
-                CSS("#ctl00_ContentPlaceHolder1_lnkChair")
-                .match_one(self.root)
-                .text_content()[:10]
-                .strip()
-                .replace("Rep.", "")
-            )
-            com.add_member(CoChair_member, role_CoC)
+            print("No Vice Chair Member Found")
+
+        # Get Members
         try:
-            members = CSS("#ctl00_ContentPlaceHolder1_dlstMembers td").match(self.root)
+            members = CSS("#ctl00_ContentPlaceHolder1_dlstMembers a").match(self.root)
+
             for member in members:
                 name = member.text_content().replace("Rep.", "")
                 role = "member"
                 if name:
                     com.add_member(name, role)
         except SelectorError:
-            members = CSS("#ctl00_ContentPlaceHolder1_dlstHMembers td").match(self.root)
-            for member in members:
-                name = member.text_content().replace("Rep.", "")
-                role = "member"
-                if name:
-                    com.add_member(name, role)
+            try:
+                members = CSS("#ctl00_ContentPlaceHolder1_dlstHMembers a").match(
+                    self.root
+                )
+
+                for member in members:
+                    name = member.text_content().replace("Rep.", "")
+                    role = "member"
+                    if name:
+                        com.add_member(name, role)
+            except SelectorError:
+                print("No Members Found")
+
         return com
 
 

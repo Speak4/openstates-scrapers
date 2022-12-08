@@ -55,7 +55,10 @@ class SenateCommitteeDetail(HtmlPage):
         V_Chair_name = V_Chair[11:].strip()
         V_Chair_rolez = rolez[1].text
         V_Chair_role = V_Chair_rolez[:11].strip()
-        com.add_member(V_Chair_name, V_Chair_role)
+
+        if V_Chair_name:
+            com.add_member(V_Chair_name, V_Chair_role)
+
         Mem_mem = Memberz[3:]
         for mem in Mem_mem:
             Mem_name = mem.text

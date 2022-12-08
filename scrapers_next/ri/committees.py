@@ -105,6 +105,10 @@ class CommitteeDetail(HtmlPage):
                 continue
 
             name = CSS("td div").match(member)[0].text_content().strip()
+
+            if name == "":
+                name = "Senator Blank"
+
             name = re.search(r"(Senator|Representative)\s(.+)", name).groups()[1]
             role = CSS("td div").match(member)[1].text_content().strip()
             com.add_member(name, role)

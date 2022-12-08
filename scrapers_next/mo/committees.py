@@ -43,7 +43,7 @@ class SenateCommitteeDetail(HtmlPage):
 
 class SenateTypeCommitteeList(HtmlListPage):
     example_source = "https://www.senate.mo.gov/standing-committees/"
-    selector = CSS(".entry-content a")
+    selector = CSS(".entry-content p > a")
     chamber = "upper"
 
     def process_item(self, item):

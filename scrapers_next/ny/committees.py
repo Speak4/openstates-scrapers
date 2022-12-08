@@ -19,7 +19,9 @@ class SenateCommitteeDetail(HtmlPage):
                 .lower()
             )
             chair_name = CSS(".c-chair--title").match_one(self.root).text_content()
-            com.add_member(chair_name, chair_role)
+
+            if chair_name:
+                com.add_member(chair_name, chair_role)
 
         except SelectorError:
             pass
@@ -51,20 +53,28 @@ class HouseCommitteeDetail(HtmlPage):
         try:
             chairs = CSS(".chair-info").match(self.root)
         except SelectorError:
-            raise SkipItem("skipping committee without full information")
+            chairs = []
+            print("No Chair Member Found")
+            # raise SkipItem("skipping committee without full information")
 
         # in case there are co-chairs
         num_chairs = len(chairs)
 
         for chair in chairs:
             chair_name = CSS(".comm-chair-name").match_one(chair).text_content().strip()
-            chair_role = (
-                XPath(f"..//preceding-sibling::header[{num_chairs}]")
-                .match_one(chair)
-                .text_content()
-                .strip()
-                .lower()
-            )
+
+            try:
+                chair_role = (
+                    XPath(f"..//preceding-sibling::header[{num_chairs}]")
+                    .match_one(chair)
+                    .text_content()
+                    .strip()
+                    .lower()
+                )
+            except SelectorError:
+                chair_role = "no role"
+                print("No Chair Role Found")
+
             com.add_member(chair_name, chair_role)
 
         # some committees only have chairs and no members list
@@ -82,6 +92,8 @@ class HouseCommitteeDetail(HtmlPage):
                 "//section[@id='comm-addr']/div[@class='mod-inner']//text()"
             ).match(self.root)
             com.extras["address"] = f"{temp}: {room}; {zip}"
+        except SelectorError:
+            print("No Address Founds")
         except ValueError:
             room, zip = XPath(
                 "//section[@id='comm-addr']/div[@class='mod-inner']//text()"
@@ -107,6 +119,9 @@ class SenateCommitteeList(HtmlListPage):
         name = item.text_content().strip()
         com = ScrapeCommittee(name=name, chamber=self.chamber)
         com.add_source(self.source.url)
+
+        print(name)
+
         return SenateCommitteeDetail(com, source=URL(item.get("href"), timeout=30))
 
 
@@ -119,4 +134,5 @@ class HouseCommitteeList(HtmlListPage):
         name = item.text_content()
         com = ScrapeCommittee(name=name, chamber=self.chamber)
         com.add_source(self.source.url)
+
         return HouseCommitteeDetail(com, source=URL(item.get("href"), timeout=30))
