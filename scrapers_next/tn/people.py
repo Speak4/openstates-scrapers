@@ -49,15 +49,17 @@ class LegDetail(HtmlPage):
                     distr_address += line.strip()
                     distr_address += " "
             p.district_office.address = distr_address.strip()
-
-        extra_info = XPath(
-            "/html/body/div[1]/div/div/div[2]/div/div[2]/ul[2]/li[1]/ul/li"
-        ).match(self.root)
-        if len(extra_info) > 0:
-            p.extras["personal info"] = []
-            for line in extra_info:
-                p.extras["personal info"] += [line.text_content().strip()]
-
+        try:
+            extra_info = XPath(
+                "/html/body/div[1]/div/div/div[2]/div/div[2]/ul[2]/li[1]/ul/li"
+            ).match(self.root)
+            if len(extra_info) > 0:
+                p.extras["personal info"] = []
+                for line in extra_info:
+                    p.extras["personal info"] += [line.text_content().strip()]
+        except SelectorError:
+            pass
+        
         if (
             XPath("/html/body/div[1]/div/div/div[2]/div/div[1]/div[2]/h2")
             .match(self.root)[1]
@@ -172,10 +174,10 @@ class Legislators(HtmlListPage):
 
 
 class Senate(Legislators):
-    source = URL("https://www.capitol.tn.gov/senate/members/")
+    source = URL("https://wapp.capitol.tn.gov/apps/LegislatorInfo/directory.aspx?chamber=S")
     chamber = "upper"
 
 
 class House(Legislators):
-    source = URL("https://www.capitol.tn.gov/house/members/")
+    source = URL("https://wapp.capitol.tn.gov/apps/LegislatorInfo/directory.aspx?chamber=H")
     chamber = "lower"

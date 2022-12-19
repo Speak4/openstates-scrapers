@@ -21,15 +21,15 @@ class LegDetail(JsonPage):
             p.extras["education"] = self.data["legEducation"]
         if self.data["currentLeadershipPosition"] is not None:
             p.extras["title"] = self.data["currentLeadershipPosition"].strip()
-        if self.data["religion"].strip() != "":
+        if self.data["religion"] is not None and self.data["religion"].strip() != "":
             p.extras["religion"] = self.data["religion"].strip()
         if self.data["spouseName"] is not None:
             p.extras["spouse name"] = self.data["spouseName"]
-        if self.data["noChildren"].strip() != "":
+        if self.data["noChildren"] is not None and self.data["noChildren"].strip() != "":
             p.extras["number of children"] = self.data["noChildren"]
-        if self.data["noGChildren"].strip() != "":
+        if self.data["noGChildren"] is not None and self.data["noGChildren"].strip() != "":
             p.extras["number of grandchildren"] = self.data["noGChildren"]
-        if self.data["birthPlace"].strip() != "":
+        if self.data["birthPlace"] is not None and self.data["birthPlace"].strip() != "":
             p.extras["birth place"] = self.data["birthPlace"]
         if self.data["occupationDesc"] is not None:
             p.extras["occupation"] = self.data["occupationDesc"]
@@ -37,9 +37,9 @@ class LegDetail(JsonPage):
             p.extras["leadership"] = self.data["legLeadership"]
         if self.data["civicOrgs"] != []:
             p.extras["organizations"] = self.data["civicOrgs"]
-        if self.data["houseYears"].strip() != "":
+        if self.data["houseYears"] is not None and self.data["houseYears"].strip() != "":
             p.extras["house years"] = self.data["houseYears"]
-        if self.data["senateYears"].strip() != "":
+        if self.data["senateYears"] is not None and self.data["senateYears"].strip() != "":
             p.extras["senate years"] = self.data["senateYears"]
         p.extras["prior service"] = self.data["legPriorService"]
 

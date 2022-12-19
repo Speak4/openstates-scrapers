@@ -97,7 +97,7 @@ class PersonList(HtmlListPage):
         district = dd_text[2].strip().split()[1]
         party = dd_text[4].strip()
         url = str(XPath(".//dd/a[1]/@href").match_one(item))
-        if "Details" not in url:
+        if "Details" not in url or "Details/forbes01" in url:
             raise SkipItem(f"skipping {url}")
         return PersonDetail(
             dict(

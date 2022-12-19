@@ -44,8 +44,10 @@ class LegDetail(JsonPage):
             if info:
                 if type_info == "staff":
                     info = re.split("mailto:|>|<", info)
-                    p.extras["staff"] = info[3]
-                    p.extras["staff email"] = info[2].replace('"', "")
+                    if len(info) >= 4:
+                        p.extras["staff"] = info[3]
+                    if len(info) >= 3:
+                        p.extras["staff email"] = info[2].replace('"', "")
                 else:
                     p.extras[type_info] = info
 

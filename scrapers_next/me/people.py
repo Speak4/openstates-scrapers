@@ -161,7 +161,7 @@ class House(HtmlListPage):
 
         partial = PartialPerson(name=name, party=party, source=self.source.url)
 
-        detail_link = CSS("a").match(item)[1].get("href")
+        detail_link = CSS("a").match(item)[0].get("href")
         # Justin Fecteau resigned 7/4/21
         if (
             detail_link
@@ -223,10 +223,18 @@ class SenDetail(HtmlPage):
             .match_one(self.root)
             .getnext()
         )
-        if website.get("href") is None:
-            website = website.getnext().get("href")
+        if website is None:
+            website = (
+                XPath("//*[@id='content']/p[contains(text(), 'mesenategop')]")
+                .match_one(self.root)
+            )
+            if website is not None:
+                website = "https://mesenategop.com/"
         else:
-            website = website.get("href")
+            if website.get("href") is None:
+                website = website.getnext().get("href")
+            else:
+                website = website.get("href")
         p.add_link(website, note="website")
 
         return p
@@ -234,7 +242,7 @@ class SenDetail(HtmlPage):
 
 class Senate(ExcelListPage):
     source = URL(
-        "https://legislature.maine.gov/uploads/visual_edit/130th-senate-contact-information-as-of-31221.xlsx"
+        "https://legislature.maine.gov/uploads/visual_edit/131-senator-contact-information.xlsx" #May need to update in future scrapes
     )
 
     def process_item(self, item):
@@ -242,11 +250,11 @@ class Senate(ExcelListPage):
         if item[0] == "Dist" or item[0] is None:
             self.skip()
 
-        first_name = item[3].strip()
-        last_name = item[4].strip()
+        first_name = item[2].strip()
+        last_name = item[3].strip()
         name = first_name + " " + last_name
         district = item[0]
-        party = item[2].strip()
+        party = item[1].strip()
 
         if not district:
             # non voting members ignored for now
@@ -263,17 +271,18 @@ class Senate(ExcelListPage):
         p.given_name = first_name
         p.family_name = last_name
 
-        detail_link = URL(f"https://legislature.maine.gov/District-{district}")
+        detail_link = URL(f"https://legislature.maine.gov/district{district}")
         p.add_source(self.source.url)
         p.add_source(detail_link.url)
         p.add_link(detail_link.url, note="homepage")
 
-        county = item[1].strip()
-        p.extras["county represented"] = county
+        #County not in new spreadsheet
+        #county = item[1].strip()
+        #p.extras["county represented"] = county
 
-        mailing_address = item[5].strip()
-        zipcode = item[8].strip()
-        city = item[6].strip()
+        mailing_address = item[4].strip()
+        zipcode = item[7].strip()
+        city = item[5].strip()
         address = f"{mailing_address}, {city}, ME {zipcode}"
         if re.search(r"St(\s|,)", address):
             address = re.sub(r"St\s", "Street ", address)
@@ -286,15 +295,14 @@ class Senate(ExcelListPage):
             address = re.sub(r"N\.", "North", address)
         p.district_office.address = address
 
-        phone = item[9].strip()
-        phone = "(207) " + phone
+        phone = ""
         p.district_office.voice = phone
 
-        alternate = item[10]
-        if alternate is not None:
-            p.extras["alternate phone"] = alternate.strip()
+        #alternate = item[10]
+        #if alternate is not None:
+            #p.extras["alternate phone"] = alternate.strip()
 
-        email = item[11].strip()
+        email = item[8].strip()
         p.email = email
 
         return SenDetail(p, source=detail_link)

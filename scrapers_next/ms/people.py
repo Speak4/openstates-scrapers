@@ -166,7 +166,7 @@ class Legislators(HtmlPage):
                 name = children[1].text_content().strip()
                 link_id = children[2].text_content().strip()
                 # skip Lt. Gov. Delbert Hosemann
-                if link_id == "http://ltgovhosemann.ms.gov/":
+                if link_id == "http://ltgovhosemann.ms.gov/" or "#DCDCDC" in link_id:
                     continue
                 else:
                     link = "http://billstatus.ls.state.ms.us/members/" + link_id
@@ -184,6 +184,10 @@ class Legislators(HtmlPage):
                         continue
 
                     link_id = mem[1].text_content().strip()
+                    
+                    if "#DCDCDC" in link_id:
+                      continue
+                
                     link = "http://billstatus.ls.state.ms.us/members/" + link_id
 
                     partial_p = PartialPerson(

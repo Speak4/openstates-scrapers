@@ -53,21 +53,23 @@ class LegDetail(HtmlPage):
         except SelectorError:
             pass
 
-        table = XPath("//div[@class='legisIndent divideVert']//td//text()").match(
-            self.root
-        )
+        try:
+            table = XPath("//div[@class='legisIndent divideVert']//td//text()").match(
+                self.root
+            )
 
-        # the fields, like "cell phone", etc. are located at every odd indice
-        # the information for each field, like the phone number, are located at every even indice
-        fields = list(map(self.get_field, table[0::2]))
-        extra = table[1::2]
+            # the fields, like "cell phone", etc. are located at every odd indice
+            # the information for each field, like the phone number, are located at every even indice
+            fields = list(map(self.get_field, table[0::2]))
+            extra = table[1::2]
+            num_of_fields = range(len(fields))
 
-        num_of_fields = range(len(fields))
-
-        for i in num_of_fields:
-            if fields[i] == "Legislative Email":
-                continue
-            p.extras[fields[i].lower()] = extra[i].strip()
+            for i in num_of_fields:
+                if fields[i] == "Legislative Email":
+                    continue
+                p.extras[fields[i].lower()] = extra[i].strip()
+        except:
+            pass
 
         return p
 
