@@ -46,17 +46,17 @@ class CommitteeList(HtmlListPage):
 
 
 class SenateCommitteeList(CommitteeList):
-    source = URL("https://docs.legis.wisconsin.gov/2021/committees/senate")
+    source = URL("https://docs.legis.wisconsin.gov/2023/committees/senate")
     chamber = "upper"
 
 
 class HouseCommitteeList(CommitteeList):
-    source = URL("https://docs.legis.wisconsin.gov/2021/committees/assembly")
+    source = URL("https://docs.legis.wisconsin.gov/2023/committees/assembly")
     chamber = "lower"
 
 
 class JointCommitteeList(CommitteeList):
-    source = URL("https://docs.legis.wisconsin.gov/2021/committees/joint")
+    source = URL("https://docs.legis.wisconsin.gov/2023/committees/joint")
     chamber = "legislature"
 
 

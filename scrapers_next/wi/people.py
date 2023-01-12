@@ -94,12 +94,18 @@ class Legislators(HtmlListPage):
 
         website = CSS("span.info strong a").match_one(item).get("href")
         p.extras["website"] = website
-
-        detail_link = (
-            XPath(".//span[1]/span[3]/a[contains(text(), 'Details')]")
-            .match_one(item)
-            .get("href")
-        )
+        try:
+            detail_link = (
+                XPath(".//span[1]/span[3]/a[contains(text(), 'Details')]")
+                .match_one(item)
+                .get("href")
+            )
+        except:
+            detail_link = (
+                XPath(".//span[2]/span[3]/a[contains(text(), 'Details')]")
+                .match_one(item)
+                .get("href")
+            )
 
         p.add_source(self.source.url)
         p.add_source(detail_link)
@@ -115,7 +121,10 @@ class Legislators(HtmlListPage):
 
         email = CSS("span.info.email a").match_one(item).text_content().strip()
         p.email = email
-        img = CSS("img").match_one(item).get("src")
+        try:
+            img = CSS("img").match_one(item).get("src")
+        except:
+            img = ""
         p.image = img
 
         phones = (
@@ -148,10 +157,10 @@ class Legislators(HtmlListPage):
 
 
 class Senate(Legislators):
-    source = URL("https://docs.legis.wisconsin.gov/2021/legislators/senate/")
+    source = URL("https://docs.legis.wisconsin.gov/2023/legislators/senate/")
     chamber = "upper"
 
 
 class House(Legislators):
-    source = URL("https://docs.legis.wisconsin.gov/2021/legislators/assembly/")
+    source = URL("https://docs.legis.wisconsin.gov/2023/legislators/assembly/")
     chamber = "lower"

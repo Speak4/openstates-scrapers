@@ -52,7 +52,7 @@ class CommitteeDetail(JsonPage):
 class CommitteeList(JsonListPage):
 
     source = URL(
-        "https://www.legis.ga.gov/api/committees/List/1029",
+        "https://www.legis.ga.gov/api/committees/List/1031",
         headers={"Authorization": get_token()},
     )
 
@@ -63,7 +63,7 @@ class CommitteeList(JsonListPage):
             chamber = "lower"
 
         source = URL(
-            f"https://www.legis.ga.gov/api/committees/details/{item['id']}/1029",
+            f"https://www.legis.ga.gov/api/committees/details/{item['id']}/1031",
             headers={"Authorization": get_token()},
         )
 

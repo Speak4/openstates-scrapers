@@ -20,7 +20,7 @@ class HousePartial:
 class Representatives(HtmlListPage):
     # note: there is a CSV, but it requires a bunch of ASP.net hoops to actually get
     source = URL(
-        "https://house.mo.gov/MemberGridCluster.aspx?year=2021&code=R+&filter=clear"
+        "https://house.mo.gov/MemberGridCluster.aspx?year=2023&code=R+&filter=clear"
     )
     selector = CSS("tr")
 
@@ -78,7 +78,7 @@ class HouseDetail(HtmlPage):
 
 
 class Senators(ExcelListPage):
-    source = "https://www.senate.mo.gov/21info/2021Sens.xlsx"
+    source = "https://www.senate.mo.gov/23info/2023Sens.xlsx"
     HEADERS = ("District", "First Name", "Last Name", "Address", "Party", "Phone")
 
     def process_item(self, row):

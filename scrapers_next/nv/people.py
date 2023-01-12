@@ -55,8 +55,9 @@ class Legislators(HtmlListPage):
         cap_addr = f"Room {leg_bldg_room};c/o Nevada {chamb};401 South Carson Street;Carson City, NV 89701-4747"
         p.capitol_office.address = cap_addr
 
-        leg_bldg_phone = extra_info_detail[3].text_content().strip()
-        p.capitol_office.voice = leg_bldg_phone
+        if extra_info_detail is not None and len(extra_info_detail) >= 4:
+            leg_bldg_phone = extra_info_detail[3].text_content().strip()
+            p.capitol_office.voice = leg_bldg_phone
 
         return p
 

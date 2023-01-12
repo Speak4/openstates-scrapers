@@ -61,7 +61,7 @@ class DirectoryListing(JsonListPage):
     chamber_names = {1: "house", 2: "senate"}
     party_ids = {0: "Democratic", 1: "Republican"}
     source = URL(
-        "https://www.legis.ga.gov/api/members/list/1029",
+        "https://www.legis.ga.gov/api/members/list/1031",
         headers={"Authorization": get_token()},
     )
 
@@ -84,7 +84,7 @@ class DirectoryListing(JsonListPage):
         if da["email"]:
             p.email = da["email"]
         else:
-            p.email = "missing@invalid.no"
+            p.email = ""
 
         if da["phone"]:
             p.district_office.voice = da["phone"]
@@ -110,7 +110,7 @@ class DirectoryListing(JsonListPage):
         # extras
 
         p.extras["residence"] = item["residence"]
-        p.extras["city"] = item["city"].strip()
+        #p.extras["city"] = item["city"].strip()
         p.extras["georgia_id"] = item["id"]
 
         url = (

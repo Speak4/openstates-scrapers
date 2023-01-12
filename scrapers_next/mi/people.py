@@ -26,7 +26,7 @@ def ord_suffix(str_num):
 
 
 class Senators(HtmlListPage):
-    source = URL("https://senate.michigan.gov/senatorinfo_list.html", verify=False)
+    source = URL("https://senate.michigan.gov/senators/senatorinfo_list.html", verify=False)
     selector = CSS(".table tbody tr", num_items=38)
     PARTY_MAP = {"Rep": "Republican", "Dem": "Democratic"}
 

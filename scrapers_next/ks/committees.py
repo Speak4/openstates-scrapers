@@ -116,49 +116,54 @@ class CommitteeList(HtmlListPage):
 
 
 class Senate1CommittteeList(CommitteeList):
-    source = "http://www.kslegislature.org/li/b2021_22/committees/"
+    source = "http://www.kslegislature.org/li/b2023_24/committees/"
     chamber = "upper"
     selector = CSS("#senate-standing-comm-tab-1 li")
 
 
 class Senate2CommittteeList(CommitteeList):
-    source = "http://www.kslegislature.org/li/b2021_22/committees/"
+    source = "http://www.kslegislature.org/li/b2023_24/committees/"
     chamber = "upper"
     selector = CSS("#senate-standing-comm-tab-2 li")
 
 
 class House1CommittteeList(CommitteeList):
-    source = "http://www.kslegislature.org/li/b2021_22/committees/"
+    source = "http://www.kslegislature.org/li/b2023_24/committees/"
     chamber = "lower"
     selector = CSS("#house-standing-comm-tab-1 li")
 
 
 class House2CommittteeList(CommitteeList):
-    source = "http://www.kslegislature.org/li/b2021_22/committees/"
+    source = "http://www.kslegislature.org/li/b2023_24/committees/"
     chamber = "lower"
     selector = CSS("#house-standing-comm-tab-2 li")
 
 
 class Joint1CommittteeList(CommitteeList):
-    source = "http://www.kslegislature.org/li/b2021_22/committees/"
+    source = "http://www.kslegislature.org/li/b2023_24/committees/"
     chamber = "legislature"
     selector = CSS("#joint-comm-tab-1 li")
 
 
 class Other1CommittteeList(CommitteeList):
-    source = "http://www.kslegislature.org/li/b2021_22/committees/"
+    source = "http://www.kslegislature.org/li/b2023_24/committees/"
     chamber = "legislature"
     selector = CSS("#other-comm-tab-1 li")
 
 
 class Special1CommittteeList(CommitteeList):
-    source = "http://www.kslegislature.org/li/b2021_22/committees/"
+    source = "http://www.kslegislature.org/li/b2023_24/committees/"
     chamber = "legislature"
     selector = CSS("#special-comm-tab-1 li")
 
 
+class Special2CommittteeList(CommitteeList):
+    source = "http://www.kslegislature.org/li/b2023_24/committees/"
+    chamber = "legislature"
+    selector = CSS("#special-comm-tab-2 li")
+
 class Sub1CommittteeList(CommitteeList):
-    source = "http://www.kslegislature.org/li/b2021_22/committees/"
+    source = "http://www.kslegislature.org/li/b2023_24/committees/"
     chamber = "legislature"
     selector = CSS("#subcommittee-comm-tab-1 li")
 

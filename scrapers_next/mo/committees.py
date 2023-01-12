@@ -90,7 +90,7 @@ class SenateTypeCommitteeList(HtmlListPage):
 
 
 class SenateCommitteeList(HtmlListPage):
-    source = "https://www.senate.mo.gov/committee/"
+    source = "https://www.senate.mo.gov/committees/"
     selector = CSS("#post-90 a")
 
     def process_item(self, item):
